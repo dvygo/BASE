@@ -1,0 +1,77 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="AWS Architecture" id="AWS_ARCH">
+    <![CDATA[
+      digraph AWS_Architecture {
+	rankdir=TB size=10
+	User [label=User fillcolor="#AED6F1" style=filled]
+	Amplify [label="AWS Amplify
+- Frontend Hosting
+- CI/CD
+- Auth-UI" fillcolor="#AED6F1" style=filled]
+	User -> Amplify
+	Cognito [label="Amazon Cognito
+- User Pools
+- JWT Token
+- MFA" fillcolor="#F9E79F" style=filled]
+	Amplify -> Cognito
+	AdminCognito [label="Admin Cognito
+(Admin Pool)" fillcolor="#F9E79F" style=filled]
+	Cognito -> AdminCognito
+	APIGateway [label="API Gateway
+- Receives JWT
+- Routes to Lambda" fillcolor="#ABEBC6" style=filled]
+	Lambda [label="AWS Lambda
+- Session Mgmt
+- Auth Handlers
+- Data Sync" fillcolor="#ABEBC6" style=filled]
+	Cognito -> APIGateway
+	APIGateway -> Lambda
+	BaseServer [label="Base Server
+(PostgreSQL)" fillcolor="#D2B4DE" style=filled]
+	RDS [label="AWS RDS (PostgreSQL)
+- Multi-AZ
+- Read Replicas
+- Backups" fillcolor="#D2B4DE" style=filled]
+	Pipeline [label="Data Pipeline
+- Real-Time + Batch
+- Validation
+- Sync" fillcolor="#ABEBC6" style=filled]
+	Lambda -> RDS
+	RDS -> BaseServer
+	BaseServer -> Pipeline
+	Pipeline -> RDS
+	AdminDash [label="Admin Dashboard
+- Session Monitor
+- Logs
+- Sync Status" fillcolor="#FAD7A0" style=filled]
+	AdminCognito -> AdminDash
+	VPC [label="VPC
+- Private Subnets
+- Security Groups" fillcolor="#F5B7B1" style=filled]
+	IAM [label="IAM Roles" fillcolor="#F5B7B1" style=filled]
+	KMS [label="KMS (Encryption)" fillcolor="#F5B7B1" style=filled]
+	WAF [label="WAF (Firewall)" fillcolor="#F5B7B1" style=filled]
+	AdminDash -> VPC
+	VPC -> IAM
+	IAM -> KMS
+	KMS -> WAF
+	CloudWatch [label=CloudWatch fillcolor="#D5DBDB" style=filled]
+	XRay [label="X-Ray" fillcolor="#D5DBDB" style=filled]
+	CloudTrail [label=CloudTrail fillcolor="#D5DBDB" style=filled]
+	Lambda -> CloudWatch
+	CloudWatch -> XRay
+	XRay -> CloudTrail
+	Route53 [label="Route 53 (DNS)" fillcolor="#D5DBDB" style=filled]
+	ElastiCache [label="ElastiCache (Optional)" fillcolor="#D5DBDB" style=filled]
+	CloudTrail -> Route53
+	Route53 -> ElastiCache
+	Compliance [label="Disaster Recovery & Compliance
+- Cross-region RDS
+- PITR
+- Backup Policies
+- Reports" fillcolor="#FDEBD0" style=filled]
+	RDS -> Compliance
+}
+    ]]>
+  </diagram>
+</mxfile>
